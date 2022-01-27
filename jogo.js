@@ -7,6 +7,25 @@ const canvas = document.querySelector('canvas');
 const contexto = canvas.getContext('2d');
 contexto.imageSmoothingEnabled = false;
 
+const telaGetReady = {
+  spriteX: 134,
+  spriteY: 0,
+  largura: 174,
+  altura: 152,
+  x: ((canvas.width / 2) - (174 / 2)),
+  y: ((canvas.height / 2) - (152 / 2)),
+
+  desenha(){
+    contexto.drawImage(
+      sprites,
+      this.spriteX, this.spriteY,
+      this.largura, this.altura,
+      this.x, this.y,
+      this.largura, this.altura
+    )
+  }
+}
+
 const planoDeFundo = {
   spriteX: 390,
   spriteY: 0,
@@ -20,17 +39,17 @@ const planoDeFundo = {
     contexto.fillRect(0, 0, canvas.height, canvas.width)
     contexto.drawImage(
       sprites,
-      planoDeFundo.spriteX, planoDeFundo.spriteY,
-      planoDeFundo.largura, planoDeFundo.altura,
-      planoDeFundo.x, planoDeFundo.y,
-      planoDeFundo.largura, planoDeFundo.altura
+      this.spriteX, this.spriteY,
+      this.largura, this.altura,
+      this.x, this.y,
+      this.largura, this.altura
     ) 
     contexto.drawImage(
       sprites,
-      planoDeFundo.spriteX, planoDeFundo.spriteY,
-      planoDeFundo.largura, planoDeFundo.altura,
-      (planoDeFundo.x + planoDeFundo.largura), planoDeFundo.y,
-      planoDeFundo.largura , planoDeFundo.altura
+      this.spriteX, this.spriteY,
+      this.largura, this.altura,
+      (this.x + this.largura), this.y,
+      this.largura , this.altura
     ) 
   }
 }
@@ -90,14 +109,56 @@ const flappyBird = {
   }
 }
 
+
+let telaAtiva = {};
+
+function mudaTela(novaTela){
+  telaAtiva = novaTela;
+};
+//telas
+const telas = {
+  INICIO: {
+    desenha(){
+      planoDeFundo.desenha();
+      chao.desenha();
+      flappyBird.desenha()
+      telaGetReady.desenha();
+    },
+    atualiza(){
+
+    },
+    click(){
+      mudaTela(telas.JOGO)
+    }
+  },
+
+  JOGO: {
+    desenha(){
+      planoDeFundo.desenha();
+      chao.desenha();
+      flappyBird.desenha()
+    },
+    atualiza(){
+      flappyBird.atualiza();
+    },
+    click(){
+      
+    }
+  }
+};
+
+
 function loop() {
-  flappyBird.atualiza();
-
-  planoDeFundo.desenha();
-  chao.desenha();
-  flappyBird.desenha();
-
+  telaAtiva.desenha();
+  telaAtiva.atualiza();
   requestAnimationFrame(loop);
 }
 
+window.addEventListener('click', function (){
+  if (telaAtiva.click){
+    telaAtiva.click()
+  }
+})
+
+mudaTela(telas.INICIO)
 loop();
