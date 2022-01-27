@@ -1,9 +1,11 @@
 # flappy-bird
 
+- [O Game](https://cent222.github.io/flappy-bird/)
+
 Praticando criação de games:
 
 - Replicando o projeto do devsoutinho
-4
+
 ## Links Úteis
 
 - **Canvas**
