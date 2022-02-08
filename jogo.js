@@ -1,5 +1,7 @@
 console.log('[Cent222] Flappy Bird');
 
+const som_HIT = new Audio();
+som_HIT.src = "./efeitos/hit.wav";
 const sprites = new Image();
 sprites.src = './sprites.png';
 
@@ -112,7 +114,11 @@ function criaFlappyBird(){
     atualiza(){
       if(fazColisao(flappyBird, chao)){
         console.log('colidiu')
-        mudaTela(telas.INICIO)
+        som_HIT.play();
+        setTimeout(() =>{
+
+          mudaTela(telas.INICIO)
+        }, 500)
         return;
       }
       flappyBird.velocidade += flappyBird.gravidade;
